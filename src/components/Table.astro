@@ -16,6 +16,38 @@ const { items, weekday, lang, enableHashtag = true } = Astro.props
 const t = useTranslations(lang)
 ---
 
+<style>
+  table {
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+    font-size: 0.8rem;
+    letter-spacing: 0.8px;
+  }
+
+  caption {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  thead,
+  tfoot {
+    background-color: var(--table-header-bg);
+    transition: background-color 0.3s;
+  }
+
+  th,
+  td {
+    border: 1px solid rgb(160 160 160);
+    padding: 8px 10px;
+    max-width: 300px;
+  }
+
+  td:last-of-type {
+    text-align: center;
+  }
+</style>
+
 <script>
   const $ = document.getElementById('time-zone')
   if ($) {
@@ -134,34 +166,3 @@ const t = useTranslations(lang)
     }
   </tbody>
 </table>
-
-<style>
-  table {
-    border-collapse: collapse;
-    border: 2px solid rgb(140 140 140);
-    font-size: 0.8rem;
-    letter-spacing: 0.8px;
-  }
-
-  caption {
-    padding: 10px;
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-
-  thead,
-  tfoot {
-    background-color: rgb(228 240 245);
-  }
-
-  th,
-  td {
-    border: 1px solid rgb(160 160 160);
-    padding: 8px 10px;
-    max-width: 300px;
-  }
-
-  td:last-of-type {
-    text-align: center;
-  }
-</style>
