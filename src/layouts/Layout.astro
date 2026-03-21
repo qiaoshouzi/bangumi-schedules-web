@@ -73,6 +73,16 @@ const { lang = 'en', title } = Astro.props
         transition: background-color 0.3s;
       }
     </style>
+
+    <script>
+      if ('serviceWorker' in navigator)
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('/sw.js', { type: 'module', scope: '/' })
+            .then(() => console.log('Service worker registered successfully.'))
+            .catch((e) => console.error('Service worker registration failed:', e))
+        })
+    </script>
   </head>
   <body>
     <slot />
