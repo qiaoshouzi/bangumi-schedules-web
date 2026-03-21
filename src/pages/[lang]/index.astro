@@ -19,7 +19,7 @@ const { seasons } = Astro.props
 const t = useTranslations(lang)
 ---
 
-<Layout title={t('catalog')}>
+<Layout lang={lang} title={t('catalog')}>
   <div style="text-align: center">
     <h1>{t('catalog')}</h1>
     <LangNav />

@@ -32,7 +32,7 @@ const { items, weekday } = Astro.props
 const t = useTranslations(lang)
 ---
 
-<Layout title={`${season} - ${getWeekdayName(weekday, lang)}`}>
+<Layout lang={lang} title={`${season} - ${getWeekdayName(weekday, lang)}`}>
   <div style="text-align: center">
     <h1>{season}</h1>
     <div>

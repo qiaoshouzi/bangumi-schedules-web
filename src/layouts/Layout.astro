@@ -2,13 +2,14 @@
 import Footer from '@/components/Footer.astro'
 
 interface Props {
+  lang?: string
   title?: string
 }
-const { title } = Astro.props
+const { lang = 'en', title } = Astro.props
 ---
 
 <!doctype html>
-<html lang="zh-Hans">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta
