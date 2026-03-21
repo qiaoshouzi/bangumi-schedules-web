@@ -2,9 +2,10 @@
 const time = new Date().toUTCString()
 ---
 
-<footer>
+<footer style="text-align: center">
   <hr />
-  <div style="text-align: center">
+  <div>Data Source: <a href="https://bgm.wiki">bgm.wiki</a></div>
+  <div>
     <span>Version:</span>
     <a
       target="_blank"
@@ -18,5 +19,5 @@ const time = new Date().toUTCString()
       >{import.meta.env.PUBLIC_DB_GIT_HASH.slice(0, 7)}</a
     >
   </div>
-  <div style="text-align: center">Build Time: {time}</div>
+  <div>Build Time: {time}</div>
 </footer>
