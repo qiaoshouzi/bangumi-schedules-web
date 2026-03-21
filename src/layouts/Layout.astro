@@ -21,13 +21,6 @@ const { lang = 'en', title } = Astro.props
 
     <title>{`Bangumi Schedules${title ? ` - ${title}` : ''}`}</title>
 
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/css/flag-icons.min.css"
-      integrity="sha256-tyPeBlnZW2qWbAF1hQiCt9qo6SOgOSymvJBum+FrrwI="
-      crossorigin="anonymous"
-    />
-
     <style is:global>
       html,
       body {
@@ -88,5 +81,14 @@ const { lang = 'en', title } = Astro.props
     <slot />
 
     <Footer />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flag-icons@7.5.0/css/flag-icons.min.css"
+      integrity="sha256-tyPeBlnZW2qWbAF1hQiCt9qo6SOgOSymvJBum+FrrwI="
+      crossorigin="anonymous"
+      blocking="render"
+      media="print"
+    />
   </body>
 </html>
