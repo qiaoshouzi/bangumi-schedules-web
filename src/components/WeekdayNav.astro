@@ -13,18 +13,15 @@ const { baseUrl = '../', lang } = Astro.props
 const t = useTranslations(lang)
 ---
 
-<div class="nav-weekday">
+<div style="margin: 0 4px">
   <a href={baseUrl}>{t('nav.weekday.all')}</a>
   {
     weekDayNames.map((v, i) => {
-      return <a href={`${baseUrl}${v}/`}>{getWeekdayName(i, lang)}</a>
+      return (
+        <a href={`${baseUrl}${v}/`} style="margin-left: 4px">
+          {getWeekdayName(i, lang)}
+        </a>
+      )
     })
   }
 </div>
-<style>
-  .nav-weekday {
-    display: flex;
-    gap: 4px;
-    justify-content: center;
-  }
-</style>
