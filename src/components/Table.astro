@@ -3,12 +3,15 @@ import { useTranslations, type Lang } from '@/i18n/utils'
 import { getWeekdayName } from '@/utils'
 import type { Items } from '@/utils/parseItems'
 
+const weekDayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
 interface Props {
   items: Items
   weekday: number
   lang?: Lang
+  enableHashtag?: boolean
 }
-const { items, weekday, lang } = Astro.props
+const { items, weekday, lang, enableHashtag = true } = Astro.props
 
 const t = useTranslations(lang)
 ---
@@ -47,7 +50,15 @@ const t = useTranslations(lang)
 </script>
 
 <table data-weekday={weekday} style="margin: 0 auto; max-width: 1000px;">
-  <caption>{getWeekdayName(weekday, lang)}</caption>
+  <caption id={weekDayNames[weekday]}>
+    {
+      enableHashtag ? (
+        <a href={`#${weekDayNames[weekday]}`}>{getWeekdayName(weekday, lang)}</a>
+      ) : (
+        getWeekdayName(weekday, lang)
+      )
+    }
+  </caption>
   <thead>
     <tr>
       <th>{t('table.cell.name')}</th>
