@@ -1,0 +1,156 @@
+---
+import { useTranslations, type Lang } from '@/i18n/utils'
+import { getWeekdayName } from '@/utils'
+import type { Items } from '@/utils/parseItems'
+
+interface Props {
+  items: Items
+  weekday: number
+  lang?: Lang
+}
+const { items, weekday, lang } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+<script>
+  const $ = document.getElementById('time-zone')
+  if ($) {
+    const localOffset = -new Date().getTimezoneOffset() / 60
+    $.innerText = `(GMT${localOffset >= 0 ? '+' : ''}${localOffset})`
+  }
+</script>
+<script>
+  import { getLangFromUrl } from '@/i18n/utils'
+  import { getWeekdayName } from '@/utils'
+
+  const lang = getLangFromUrl(new URL(location.href))
+
+  for (const table of document.querySelectorAll<HTMLElement>('table')) {
+    const tableWeekday = Number(table.dataset.weekday)
+    for (const $ of table.querySelectorAll<HTMLElement>('td.time')) {
+      const originTime = {
+        hour: Number($.dataset.hour),
+        minute: Number($.dataset.minute),
+        weekday: Number($.dataset.weekday),
+      }
+
+      const date = new Date(
+        Date.UTC(2024, 4, 19 + originTime.weekday, originTime.hour - 9, originTime.minute),
+      )
+      const localH = String(date.getHours()).padStart(2, '0')
+      const localM = String(date.getMinutes()).padStart(2, '0')
+      const localWeekday = date.getDay()
+      $.innerHTML = `<div>${localH}:${localM}</div>${localWeekday !== tableWeekday ? `<div>(${getWeekdayName(localWeekday, lang)})</div` : ''}`
+    }
+  }
+</script>
+
+<table data-weekday={weekday} style="margin: 0 auto; max-width: 1000px;">
+  <caption>{getWeekdayName(weekday, lang)}</caption>
+  <thead>
+    <tr>
+      <th>{t('table.cell.name')}</th>
+      <th>
+        <div>{t('table.cell.time')}</div>
+        <div>
+          <span id="time-zone">(GMT+9)</span>
+        </div>
+      </th>
+      <th>{t('table.cell.platform')}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {
+      items
+        .map((item) =>
+          item.schedules.map((v, v_i) =>
+            v.items.map((info, info_i) => (
+              <tr>
+                {/* Name */}
+                {v_i === 0 && info_i === 0 && (
+                  <td
+                    rowspan={item.schedules
+                      .map((v) => v.items.length)
+                      .reduce((acc, cur) => acc + cur, 0)}
+                  >
+                    {item.isContinue && <div>{t('continue')}</div>}
+                    <a target="_blank" href={`https://bgm.wiki/anime/${item.id}`}>
+                      {item.title.main}
+                    </a>
+                    <div style="color: darkgray">{item.title.jp}</div>
+                  </td>
+                )}
+                {/* Time */}
+                {info_i === 0 && (
+                  <td
+                    rowspan={v.items.length}
+                    class="time"
+                    data-hour={v.time.hour}
+                    data-minute={v.time.minute}
+                    data-weekday={v.time.weekday}
+                  >
+                    <div>
+                      {`${String(v.time.hour).padStart(2, '0')}:${String(v.time.minute).padStart(2, '0')}`}
+                    </div>
+                    {weekday !== v.time.weekday && (
+                      <div>({getWeekdayName(v.time.weekday, lang)})</div>
+                    )}
+                  </td>
+                )}
+                {/* Platform */}
+                <td>
+                  <div>
+                    {info.areas.map((v) => {
+                      const result = t(`area.${v}`)
+                      if (result) return <span>{result}</span>
+                      return <span class={`fi fi-${v.toLowerCase()}`} />
+                    })}
+                  </div>
+                  {info.platform.url ? (
+                    <a target="_blank" href={info.platform.url} referrerpolicy="no-referrer">
+                      {info.platform.name}
+                    </a>
+                  ) : (
+                    <div>{info.platform.name}</div>
+                  )}
+                </td>
+              </tr>
+            )),
+          ),
+        )
+        .flat(2)
+    }
+  </tbody>
+</table>
+
+<style>
+  table {
+    border-collapse: collapse;
+    border: 2px solid rgb(140 140 140);
+    font-size: 0.8rem;
+    letter-spacing: 0.8px;
+  }
+
+  caption {
+    padding: 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+
+  thead,
+  tfoot {
+    background-color: rgb(228 240 245);
+  }
+
+  th,
+  td {
+    border: 1px solid rgb(160 160 160);
+    padding: 8px 10px;
+    max-width: 300px;
+  }
+
+  td:last-of-type {
+    text-align: center;
+  }
+</style>

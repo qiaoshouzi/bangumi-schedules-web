@@ -1,0 +1,18 @@
+---
+import LangNav from '@/components/LangNav.astro'
+import Layout from '@/layouts/Layout.astro'
+---
+
+<Layout>
+  <script is:inline>
+    ;(function () {
+      const lang = navigator.language.toLocaleLowerCase()
+      if (lang.startsWith('zh')) window.location.pathname = '/zh-hans/'
+      else window.location.pathname = '/en/'
+    })()
+  </script>
+  <noscript>
+    <div style="text-align: center; margin-top: 16px">Select Language / 语言选择</div>
+    <LangNav />
+  </noscript>
+</Layout>

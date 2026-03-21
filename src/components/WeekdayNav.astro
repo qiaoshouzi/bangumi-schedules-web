@@ -1,0 +1,30 @@
+---
+import { useTranslations, type Lang } from '@/i18n/utils'
+import { getWeekdayName } from '@/utils'
+
+const weekDayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+
+interface Props {
+  baseUrl?: string
+  lang?: Lang
+}
+const { baseUrl = '../', lang } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+<div class="nav-weekday">
+  <a href={baseUrl}>{t('nav.weekday.all')}</a>
+  {
+    weekDayNames.map((v, i) => {
+      return <a href={`${baseUrl}${v}/`}>{getWeekdayName(i, lang)}</a>
+    })
+  }
+</div>
+<style>
+  .nav-weekday {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+  }
+</style>

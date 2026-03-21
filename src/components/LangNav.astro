@@ -1,0 +1,18 @@
+---
+import { languages } from '@/i18n/ui'
+---
+
+<div class="nav-lang">
+  {
+    Object.entries(languages).map(([lang, content]) => (
+      <a href={`/${lang}/${Astro.url.pathname.split('/').slice(2).join('/')}`}>{content}</a>
+    ))
+  }
+</div>
+<style>
+  .nav-lang {
+    display: flex;
+    gap: 4px;
+    justify-content: center;
+  }
+</style>

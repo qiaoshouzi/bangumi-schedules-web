@@ -1,0 +1,3 @@
+[submodule "db"]
+	path = db
+	url = https://github.com/qiaoshouzi/bangumi-schedules-db.git

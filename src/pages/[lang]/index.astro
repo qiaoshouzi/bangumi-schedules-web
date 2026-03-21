@@ -1,0 +1,45 @@
+---
+import type { GetStaticPaths } from 'astro'
+import Layout from '@/layouts/Layout.astro'
+import { getAllDataName } from '@/utils'
+import { useTranslations, type Lang } from '@/i18n/utils'
+import LangNav from '@/components/LangNav.astro'
+
+export const getStaticPaths = (() => {
+  const data = getAllDataName()
+  return Object.entries(data).map(([lang, seasons]) => ({
+    params: { lang: lang as Lang },
+    props: { seasons },
+  }))
+}) satisfies GetStaticPaths
+
+const { lang } = Astro.params
+const { seasons } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+<Layout title={t('catalog')}>
+  <div style="text-align: center">
+    <h1>{t('catalog')}</h1>
+    <LangNav />
+    <div style="margin-top: 8px">
+      {
+        seasons.map((name) => {
+          return (
+            <a data-name={name} href={`./${name}/sun/`} class="season-item">
+              {name}
+            </a>
+          )
+        })
+      }
+    </div>
+  </div>
+  <script>
+    const weekDayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    for (const $ of document.querySelectorAll<HTMLAnchorElement>('a.season-item')) {
+      const weekday = new Date().getDay()
+      $.href = `./${$.dataset.name}/${weekDayNames[weekday]}/`
+    }
+  </script>
+</Layout>

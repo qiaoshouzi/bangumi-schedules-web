@@ -1,0 +1,47 @@
+---
+import LangNav from '@/components/LangNav.astro'
+import Table from '@/components/Table.astro'
+import WeekdayNav from '@/components/WeekdayNav.astro'
+import { useTranslations, type Lang } from '@/i18n/utils'
+import Layout from '@/layouts/Layout.astro'
+import { getAllData, getWeekdayName, parseItems } from '@/utils'
+import type { GetStaticPaths } from 'astro'
+
+export const getStaticPaths = (async () => {
+  const data = await getAllData()
+  const weekDayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+  return Object.entries(data).flatMap(([lang, seasons]) =>
+    Object.entries(seasons).flatMap(([season, seasonData]) => {
+      const result = parseItems(seasonData)
+
+      return result.map((items, weekday) => ({
+        params: {
+          weekday: weekDayNames[weekday],
+          season,
+          lang: lang as Lang,
+        },
+        props: { items, weekday },
+      }))
+    }),
+  )
+}) satisfies GetStaticPaths
+
+const { season, lang } = Astro.params
+const { items, weekday } = Astro.props
+
+const t = useTranslations(lang)
+---
+
+<Layout title={`${season} - ${getWeekdayName(weekday, lang)}`}>
+  <div style="text-align: center">
+    <h1>{season}</h1>
+    <div>
+      <a href="../../">{t('catalog.back')}</a>
+    </div>
+    <LangNav />
+    <div style="margin-top: 8px">
+      <WeekdayNav lang={lang} />
+      <Table items={items} weekday={weekday} lang={lang} />
+    </div>
+  </div>
+</Layout>
