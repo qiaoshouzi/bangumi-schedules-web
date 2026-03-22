@@ -34,10 +34,16 @@ sw.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.open(CACHE_NAME).then(async (cache) => {
       const cachedResponse = await cache.match(request)
-      const resp = fetch(request).then((resp) => {
-        if (resp.ok) cache.put(request, resp.clone())
-        return resp
-      })
+      const resp = fetch(request)
+        .then((resp) => {
+          if (resp.ok) cache.put(request, resp.clone())
+          return resp
+        })
+        .catch(async (e) => {
+          const result = await cache.match('/404/')
+          if (result) return result
+          throw e
+        })
       return cachedResponse || resp
     }),
   )
