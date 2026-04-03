@@ -1,9 +1,9 @@
 ---
-import type { GetStaticPaths } from 'astro'
+import LangNav from '@/components/LangNav.astro'
+import { useTranslations, type Lang } from '@/i18n/utils'
 import Layout from '@/layouts/Layout.astro'
 import { getAllDataName } from '@/utils'
-import { useTranslations, type Lang } from '@/i18n/utils'
-import LangNav from '@/components/LangNav.astro'
+import type { GetStaticPaths } from 'astro'
 
 export const getStaticPaths = (() => {
   const data = getAllDataName()
@@ -20,24 +20,30 @@ const t = useTranslations(lang)
 ---
 
 <Layout lang={lang} title={t('catalog')}>
+  <style>
+    .season-item {
+      margin-top: 8px;
+      margin-bottom: 0;
+    }
+  </style>
   <div style="text-align: center">
     <h1>{t('catalog')}</h1>
     <LangNav />
-    <div style="margin-top: 8px">
-      {
-        seasons.map((name) => {
-          return (
-            <a data-name={name} href={`./${name}/sun/`} class="season-item">
+    {
+      seasons.map((name) => {
+        return (
+          <p class="season-item">
+            <a data-name={name} href={`./${name}/sun/`}>
               {name}
             </a>
-          )
-        })
-      }
-    </div>
+          </p>
+        )
+      })
+    }
   </div>
   <script>
     const weekDayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
-    for (const $ of document.querySelectorAll<HTMLAnchorElement>('a.season-item')) {
+    for (const $ of document.querySelectorAll<HTMLAnchorElement>('.season-item a')) {
       const weekday = new Date().getDay()
       $.href = `./${$.dataset.name}/${weekDayNames[weekday]}/`
     }
