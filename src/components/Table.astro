@@ -157,6 +157,11 @@ const t = useTranslations(lang)
                   ) : (
                     <div>{info.platform.name}</div>
                   )}
+                  {info.licensors.length > 0 && (
+                    <div style="color: darkgray">
+                      {t('licensor')}: {info.licensors.join('; ')}
+                    </div>
+                  )}
                 </td>
               </tr>
             )),

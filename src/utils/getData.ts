@@ -25,6 +25,7 @@ export type Item = {
       url?: string
     }
     areas: string[] // code
+    licensors: string[]
   }[]
 }
 export type Items = Record<number, Item>

@@ -19,6 +19,7 @@ export const ui: Record<keyof typeof languages, Record<string, string>> = {
     'table.cell.time': 'Time',
     'table.cell.platform': 'Platform',
     continue: 'Continuing',
+    licensor: 'Licensor',
   },
   'zh-hans': {
     catalog: '目录',
@@ -34,5 +35,6 @@ export const ui: Record<keyof typeof languages, Record<string, string>> = {
     'table.cell.time': '时间',
     'table.cell.platform': '平台',
     continue: '跨季连播',
+    licensor: '授权方',
   },
 } as const
